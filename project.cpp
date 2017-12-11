@@ -11,7 +11,7 @@ using namespace std;
 
 /*******************************Tokenizer**************************************/
 
-// ------------Function Prototypes----------------------------------------------
+// ---------------------------Function Prototypes-------------------------------
 void DFA_push(char); // Calls push() after performing certain validations
 void DFA_pop(char); // Calls pop() after performing certain validations.
 void process_string(string);
@@ -36,7 +36,8 @@ char E_n[9]={'1','2','3','4','5','6','7','8','9'}; //1-9
 const int accept_state=0;
 int current_state=0;
 bool state_crash=0;
-/*---------------------TRANSITION TABLE-----------------------------------------
+
+/*----------------------------TRANSITION TABLE----------------------------------
 This is the TRANSITION Function of the Push-Down-Automota(PDA)
 -NOTE: The symbol '~' means Epsilon
        -Rows are [States], Columns are subset of [symbols]
@@ -54,7 +55,7 @@ string PDA[9][9]={
          {"3~~","7~~", "5~~", "5~~", "8(~", "0~~", "5~~", "3~~", "7~~"}, //q7
          {"3~~","5~~", "5~~", "5~~", "8(~", "0~~", "5~~", "3~~", "5~~"}  //q8
 };
-//----------------------------------Tokenizer()---------------------------------
+//----------------------------------Tokenizer()------------------------------------
 
 bool Tokenizer(string word)
 {
@@ -75,8 +76,7 @@ bool Tokenizer(string word)
 
 void process_string(string word){
     /* This function will read the input string CHAR by CHAR,
-            - Process the instruction (MOVE-POP-PUSH)
-    */
+            - Process the instruction (MOVE-POP-PUSH)*/
     string instruction; //MOVE-POP-PUSH
     current_state=0;
     for (int i=0; i<word.length(); i++){
@@ -93,18 +93,14 @@ void process_string(string word){
 //-----------------------------------transition()---------------------------------------
 
 string transition(int current_state, char c){
-/*
-Returns an instruction (move-pop-push) fetched from the PDA Table.
-*/
+//Returns an instruction (move-pop-push) fetched from the PDA Table.
     return  PDA[current_state][return_col(c)];
 }
 
 //---------------------------------return_col()-----------------------------------------
 
 int return_col(char c){
-/*
-This function will return the INDEX of the column a Symbol(Char) belongs to.
-*/
+//This function will return the INDEX of the column a Symbol(Char) belongs to.
        int i=0;
 
        if (c=='(' ) return 3;
@@ -148,7 +144,6 @@ void DFA_push(char c){
 
 //------------------------------------push()-------------------------------------
 //this function push '(' into stack
-
 void push(char c){
      struct stack * node;
      struct stack * current=head;
@@ -168,7 +163,6 @@ void push(char c){
 
 //-------------------------------------pop()--------------------------------------
 //this function pop '(' from stack
-
 char pop(){
      struct stack * current=head;
      struct stack * current_prev=head;
@@ -207,6 +201,7 @@ bool status(){
      }
 }
 
+/***********************************Assignment**************************************/
 
 // Pointer to input string
 istream* input;
@@ -223,7 +218,7 @@ double error(const char* s) {
 enum Tokens {
 	NAME,		NUMBER,		END,    CONT,
 	PLUS='+',	MINUS='-',	MUL='*',
-    ASSIGN='=',	LP='(',		RP=')'
+        ASSIGN='=',	LP='(',		RP=')'
 };
 
 Tokens currentToken = END;
@@ -234,13 +229,11 @@ map <string, double> table;
 
 int check=0;
 
-/***********************************Assignment**************************************/
-
 //----------------------------------getToken----------------------------------------
 
 Tokens getToken() {
 	char ch;
-    do {
+    	do {
 		if(!input->get(ch)) return currentToken = END;
 	} while (ch!='\n' && isspace(ch));
 	// Switch each character
@@ -259,14 +252,15 @@ Tokens getToken() {
         case '=':
             check = 1;
     		return currentToken=Tokens(ch);
-	    // Numbers
+	// Numbers
     	case '0': case '1': case '2': case '3': case '4':
     	case '5': case '6': case '7': case '8': case '9':
             input->putback(ch);
             *input >> numbers;
             return currentToken=NUMBER;
         // Variable declaration
-       	default:			// NAME
+       	default:
+		// NAME
     		if (isalpha(ch)) { // If ch is alphabetic
     			strings = ch;
                 while (input->get(ch) && isalnum(ch))
